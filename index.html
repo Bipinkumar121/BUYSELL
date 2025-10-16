@@ -85,6 +85,46 @@
             color: var(--secondary);
         }
 
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .search-container {
+            position: relative;
+            width: 250px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding-left: 40px;
+            transition: all 0.3s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.2);
+            width: 300px;
+        }
+
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.7);
+        }
+
         .auth-buttons {
             display: flex;
             gap: 10px;
@@ -182,8 +222,18 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #777;
-            font-size: 3rem;
+            overflow: hidden;
+        }
+
+        .product-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .product-card:hover .product-img img {
+            transform: scale(1.05);
         }
 
         .product-info {
@@ -211,6 +261,26 @@
         .product-actions {
             display: flex;
             justify-content: space-between;
+        }
+
+        /* Search Results */
+        .search-results {
+            margin: 2rem 0;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-results h3 {
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
         }
 
         /* Authentication Modals */
@@ -289,6 +359,38 @@
             text-decoration: none;
         }
 
+        /* User Dashboard */
+        .dashboard {
+            display: none;
+            padding: 2rem 0;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
         /* Footer */
         footer {
             background: var(--dark);
@@ -355,6 +457,19 @@
                 margin-top: 1rem;
             }
 
+            .header-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .search-container {
+                width: 60%;
+            }
+
+            .search-input:focus {
+                width: 100%;
+            }
+
             .hero h1 {
                 font-size: 2rem;
             }
@@ -372,7 +487,7 @@
             <div class="header-content">
                 <a href="#" class="logo">
                     <i class="fas fa-store"></i>
-                    PrimeShop
+                    ZenX
                 </a>
                 <nav>
                     <ul>
@@ -382,9 +497,15 @@
                         <li><a href="#">Contact</a></li>
                     </ul>
                 </nav>
-                <div class="auth-buttons">
-                    <button class="btn btn-outline" id="loginBtn">Log In</button>
-                    <button class="btn btn-primary" id="signupBtn">Sign Up</button>
+                <div class="header-actions">
+                    <div class="search-container">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" class="search-input" placeholder="Search products..." id="searchInput">
+                    </div>
+                    <div class="auth-buttons">
+                        <button class="btn btn-outline" id="loginBtn">Log In</button>
+                        <button class="btn btn-primary" id="signupBtn">Sign Up</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -399,19 +520,29 @@
         </div>
     </section>
 
+    <!-- Search Results Section -->
+    <section class="container" id="searchResultsSection" style="display: none;">
+        <div class="search-results">
+            <h3>Search Results for "<span id="searchQuery"></span>"</h3>
+            <div class="products" id="searchResults">
+                <!-- Search results will be displayed here -->
+            </div>
+        </div>
+    </section>
+
     <!-- Products Section -->
     <section class="container">
         <h2 class="section-title" id="products">Featured Products</h2>
-        <div class="products">
+        <div class="products" id="productsContainer">
             <!-- Product 1 -->
-            <div class="product-card">
+            <div class="product-card" data-name="laptop" data-category="electronics">
                 <div class="product-img">
-                    <i class="fas fa-laptop"></i>
+                    <img src="images/massager.jpg" alt="Premium Laptop">
                 </div>
                 <div class="product-info">
-                    <h3 class="product-title">Premium Laptop</h3>
-                    <div class="product-price">$899.99</div>
-                    <p class="product-description">High-performance laptop with latest processor and stunning display.</p>
+                    <h3 class="product-title">ZenBeats</h3>
+                    <div class="product-price">₹4999</div>
+                    <p class="product-description">Next-gen stress-relief headset designed to help you disconnect from chaos and reconnect with calm.</p>
                     <div class="product-actions">
                         <button class="btn btn-primary">Add to Cart</button>
                         <button class="btn btn-outline">Details</button>
@@ -420,14 +551,14 @@
             </div>
 
             <!-- Product 2 -->
-            <div class="product-card">
+            <div class="product-card" data-name="headphones" data-category="electronics">
                 <div class="product-img">
-                    <i class="fas fa-headphones"></i>
+                    <img src="images/charger.jpg" alt="Wireless Headphones">
                 </div>
                 <div class="product-info">
-                    <h3 class="product-title">Wireless Headphones</h3>
-                    <div class="product-price">$129.99</div>
-                    <p class="product-description">Noise-cancelling headphones with premium sound quality.</p>
+                    <h3 class="product-title">ZenBeats Charger</h3>
+                    <div class="product-price">₹499</div>
+                    <p class="product-description">Simply place your device on the cradle to power up. No ports, no cables.</p>
                     <div class="product-actions">
                         <button class="btn btn-primary">Add to Cart</button>
                         <button class="btn btn-outline">Details</button>
@@ -436,14 +567,14 @@
             </div>
 
             <!-- Product 3 -->
-            <div class="product-card">
+            <div class="product-card" data-name="smartphone" data-category="electronics">
                 <div class="product-img">
-                    <i class="fas fa-mobile-alt"></i>
+                    <img src="images/massaager2.jpg" alt="Smartphone">
                 </div>
                 <div class="product-info">
-                    <h3 class="product-title">Smartphone</h3>
-                    <div class="product-price">$699.99</div>
-                    <p class="product-description">Latest smartphone with advanced camera and long battery life.</p>
+                    <h3 class="product-title">Circular ZenBeats</h3>
+                    <div class="product-price">₹4999</div>
+                    <p class="product-description">Next-gen stress-relief headset designed to help you disconnect from chaos and reconnect with calm.</p>
                     <div class="product-actions">
                         <button class="btn btn-primary">Add to Cart</button>
                         <button class="btn btn-outline">Details</button>
@@ -451,22 +582,71 @@
                 </div>
             </div>
 
-            <!-- Product 4 -->
-            <div class="product-card">
+            <!-- Product 4 - Massager -->
+            <div class="product-card" data-name="massager" data-category="health">
                 <div class="product-img">
-                    <i class="fas fa-clock"></i>
+                    <img src="images/commoncharger.jpg" alt="Neck and Shoulder Massager">
                 </div>
                 <div class="product-info">
-                    <h3 class="product-title">Smart Watch</h3>
-                    <div class="product-price">$249.99</div>
-                    <p class="product-description">Feature-rich smartwatch with health monitoring and notifications.</p>
+                    <h3 class="product-title">ZenBeats AllRounder</h3>
+                    <div class="product-price">₹999</div>
+                    <p class="product-description">Simply place your device on the cradle to power up. No ports, no cables.</p>
                     <div class="product-actions">
                         <button class="btn btn-primary">Add to Cart</button>
                         <button class="btn btn-outline">Details</button>
                     </div>
                 </div>
             </div>
+
+            <!-- Product 5 -->
+            <!-- <div class="product-card" data-name="camera" data-category="electronics">
+                <div class="product-img">
+                    <img src="https://images.unsplash.com/photo-1502920917128-1aa500764cbd?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Digital Camera">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Digital Camera</h3>
+                    <div class="product-price">$549.99</div>
+                    <p class="product-description">Professional camera with high-resolution sensor and multiple lenses.</p>
+                    <div class="product-actions">
+                        <button class="btn btn-primary">Add to Cart</button>
+                        <button class="btn btn-outline">Details</button>
+                    </div>
+                </div>
+            </div> -->
+
+            <!-- Product 6 -->
+            <!-- <div class="product-card" data-name="tablet" data-category="electronics">
+                <div class="product-img">
+                    <img src="https://images.unsplash.com/photo-1561154464-82e9adf32764?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Tablet">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Tablet</h3>
+                    <div class="product-price">$399.99</div>
+                    <p class="product-description">Versatile tablet perfect for work and entertainment.</p>
+                    <div class="product-actions">
+                        <button class="btn btn-primary">Add to Cart</button>
+                        <button class="btn btn-outline">Details</button>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+    </section>
+
+    <!-- User Dashboard (Hidden by default) -->
+    <section class="dashboard container" id="userDashboard">
+        <div class="dashboard-header">
+            <div class="user-info">
+                <div class="user-avatar" id="userAvatar">JD</div>
+                <div>
+                    <h2>Welcome, <span id="userName">John Doe</span></h2>
+                    <p>Your account is active</p>
+                </div>
+            </div>
+            <button class="btn btn-outline" id="logoutBtn">Log Out</button>
         </div>
+        
+        <h3>Your Recent Orders</h3>
+        <p>No recent orders. Start shopping now!</p>
     </section>
 
     <!-- Login Modal -->
@@ -577,7 +757,64 @@
     </footer>
 
     <script>
-        // Modal functionality
+        // Product data for search functionality
+        const products = [
+            {
+                id: 1,
+                name: "Premium Laptop",
+                price: "$899.99",
+                description: "High-performance laptop with latest processor and stunning display.",
+                image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
+                category: "electronics"
+            },
+            {
+                id: 2,
+                name: "Wireless Headphones",
+                price: "$129.99",
+                description: "Noise-cancelling headphones with premium sound quality.",
+                image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
+                category: "electronics"
+            },
+            {
+                id: 3,
+                name: "Smartphone",
+                price: "$699.99",
+                description: "Latest smartphone with advanced camera and long battery life.",
+                image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
+                category: "electronics"
+            },
+            {
+                id: 4,
+                name: "Neck & Shoulder Massager",
+                price: "$79.99",
+                description: "Relieve tension and stress with our advanced heating massager.",
+                image: "images/massager.jpg",
+                category: "health"
+            },
+            {
+                id: 5,
+                name: "Digital Camera",
+                price: "$549.99",
+                description: "Professional camera with high-resolution sensor and multiple lenses.",
+                image: "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
+                category: "electronics"
+            },
+            {
+                id: 6,
+                name: "Tablet",
+                price: "$399.99",
+                description: "Versatile tablet perfect for work and entertainment.",
+                image: "https://images.unsplash.com/photo-1561154464-82e9adf32764?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
+                category: "electronics"
+            }
+        ];
+
+        // DOM Elements
+        const searchInput = document.getElementById('searchInput');
+        const searchResultsSection = document.getElementById('searchResultsSection');
+        const searchResults = document.getElementById('searchResults');
+        const searchQuery = document.getElementById('searchQuery');
+        const productsContainer = document.getElementById('productsContainer');
         const loginBtn = document.getElementById('loginBtn');
         const signupBtn = document.getElementById('signupBtn');
         const loginModal = document.getElementById('loginModal');
@@ -585,8 +822,67 @@
         const closeButtons = document.querySelectorAll('.close-modal');
         const switchToSignup = document.getElementById('switchToSignup');
         const switchToLogin = document.getElementById('switchToLogin');
+        const userDashboard = document.getElementById('userDashboard');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const userName = document.getElementById('userName');
+        const userAvatar = document.getElementById('userAvatar');
 
-        // Open modals
+        // Search functionality
+        searchInput.addEventListener('input', function() {
+            const query = this.value.toLowerCase().trim();
+            
+            if (query.length === 0) {
+                searchResultsSection.style.display = 'none';
+                productsContainer.style.display = 'grid';
+                return;
+            }
+            
+            // Filter products based on search query
+            const filteredProducts = products.filter(product => 
+                product.name.toLowerCase().includes(query) || 
+                product.description.toLowerCase().includes(query) ||
+                product.category.toLowerCase().includes(query)
+            );
+            
+            // Display search results
+            displaySearchResults(filteredProducts, query);
+        });
+
+        function displaySearchResults(results, query) {
+            searchQuery.textContent = query;
+            
+            if (results.length === 0) {
+                searchResults.innerHTML = `
+                    <div class="no-results">
+                        <i class="fas fa-search" style="font-size: 3rem; margin-bottom: 1rem; color: #ccc;"></i>
+                        <h3>No products found</h3>
+                        <p>Try adjusting your search terms or browse our categories</p>
+                    </div>
+                `;
+            } else {
+                searchResults.innerHTML = results.map(product => `
+                    <div class="product-card">
+                        <div class="product-img">
+                            <img src="${product.image}" alt="${product.name}">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">${product.name}</h3>
+                            <div class="product-price">${product.price}</div>
+                            <p class="product-description">${product.description}</p>
+                            <div class="product-actions">
+                                <button class="btn btn-primary">Add to Cart</button>
+                                <button class="btn btn-outline">Details</button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            searchResultsSection.style.display = 'block';
+            productsContainer.style.display = 'none';
+        }
+
+        // Modal functionality
         loginBtn.addEventListener('click', () => {
             loginModal.style.display = 'flex';
         });
@@ -629,14 +925,44 @@
         // Form submission
         document.getElementById('loginForm').addEventListener('submit', (e) => {
             e.preventDefault();
-            alert('Login functionality would be implemented here');
+            const email = document.getElementById('loginEmail').value;
+            alert('Login successful! Welcome back.');
             loginModal.style.display = 'none';
+            
+            // Show user dashboard
+            userDashboard.style.display = 'block';
+            loginBtn.style.display = 'none';
+            signupBtn.style.display = 'none';
+            
+            // Update user info
+            const name = email.split('@')[0];
+            userName.textContent = name;
+            userAvatar.textContent = name.charAt(0).toUpperCase() + name.charAt(1).toUpperCase();
         });
 
         document.getElementById('signupForm').addEventListener('submit', (e) => {
             e.preventDefault();
-            alert('Signup functionality would be implemented here');
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            alert('Account created successfully! Welcome to PrimeShop.');
             signupModal.style.display = 'none';
+            
+            // Show user dashboard
+            userDashboard.style.display = 'block';
+            loginBtn.style.display = 'none';
+            signupBtn.style.display = 'none';
+            
+            // Update user info
+            userName.textContent = name;
+            userAvatar.textContent = name.split(' ').map(n => n.charAt(0).toUpperCase()).join('');
+        });
+
+        // Logout functionality
+        logoutBtn.addEventListener('click', () => {
+            userDashboard.style.display = 'none';
+            loginBtn.style.display = 'block';
+            signupBtn.style.display = 'block';
+            alert('You have been logged out.');
         });
     </script>
 </body>
